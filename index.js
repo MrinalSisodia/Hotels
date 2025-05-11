@@ -37,22 +37,22 @@ res.status(200).json({message: "Hotels fetched successfully."})
     }
 })
 
-async function readHotelByTitle(title) {
+async function readHotelByName(name) {
       try{
-const hotelByTitle = await Hotels.findOne({title: title})
-return hotelByTitle
+const hotelByName = await Hotels.findOne({name: name})
+return hotelByName
    }catch(error){
 throw error
    }
 }
 
-app.get("/hotels/:title", async(req,res) => {
+app.get("/hotels/:name", async(req,res) => {
       try{
-const hotel = await readHotelByTitle(req.params.title)
+const hotel = await readHotelByName(req.params.name)
 res.json(hotel)
-res.status(200).json({message: "Hotel fetched by title successfully."})
+res.status(200).json({message: "Hotel fetched by name successfully."})
     }catch(error){
-        res.status(500).json({error: "Failed to fetch hotel by title."})
+        res.status(500).json({error: "Failed to fetch hotel by name."})
     }
 })
 
