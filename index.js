@@ -30,6 +30,7 @@ throw error
 app.get("/hotels", async(req,res) => {
       try{
 const allHotels = await readHotels()
+res.json(allHotels)
 res.status(200).json({message: "Hotels fetched successfully."})
     }catch(error){
         res.status(500).json({error: "Failed to fetch hotels."})
@@ -47,7 +48,8 @@ throw error
 
 app.get("/hotels/:title", async(req,res) => {
       try{
-const hotels = await readHotelByTitle(req.params.title)
+const hotel = await readHotelByTitle(req.params.title)
+res.json(hotel)
 res.status(200).json({message: "Hotel fetched by title successfully."})
     }catch(error){
         res.status(500).json({error: "Failed to fetch hotel by title."})
