@@ -3,8 +3,56 @@ const { initializeDatabase } = require("./db/db.connect")
 const app = express()
 const Hotels = require("./models/Hotel.model")
 
+
+const cors = require("cors");
+const corsOptions = {
+  origin: "*",
+  credentials: true,
+  optionSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
+
 app.use(express.json())
 initializeDatabase()
+
+
+
+async function readHotels() {
+      try{
+const hotels = await Hotels.find()
+return hotels
+   }catch(error){
+throw error
+   }
+}
+
+app.get("/hotels", async(req,res) => {
+      try{
+const allHotels = await readHotels()
+res.status(200).json({message: "Hotels fetched successfully."})
+    }catch(error){
+        res.status(500).json({error: "Failed to fetch hotels."})
+    }
+})
+
+async function readHotelByTitle(title) {
+      try{
+const hotelByTitle = await Hotels.findOne({title: title})
+return hotelByTitle
+   }catch(error){
+throw error
+   }
+}
+
+app.get("/hotels/:title", async(req,res) => {
+      try{
+const hotels = await readHotelByTitle(req.params.title)
+res.status(200).json({message: "Hotel fetched by title successfully."})
+    }catch(error){
+        res.status(500).json({error: "Failed to fetch hotel by title."})
+    }
+})
 
 async function createHotel(newHotel){
    try{
